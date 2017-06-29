@@ -1,0 +1,225 @@
+<!- Programmer: Abdullah Altawaitan >
+<!- Date: 7 August 2014>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="http://bernii.github.io/gauge.js/dist/gauge.min.js"></script>
+
+    <!-- From https://www.youtube.com/watch?v=DQAAJJxza2A --> 
+    <script type="text/javascript">
+      function evalSlider()
+      {
+        var sliderValue = document.getElementById('rating').value;
+        document.getElementById('sliderVal').innerHTML = sliderValue; 
+        console.log('Slider = ' + sliderValue);
+      }
+    </script>
+
+    <script type="text/javascript">
+      function evalSlider2()
+      {
+        var sliderValue = document.getElementById('rating2').value;
+        document.getElementById('sliderVal2').innerHTML = sliderValue; 
+        console.log('Slider = ' + sliderValue);
+      }
+    </script>
+
+    <script type="text/javascript">
+      function evalSlider3()
+      {
+        var sliderValue = document.getElementById('rating3').value;
+        document.getElementById('sliderVal3').innerHTML = sliderValue; 
+        console.log('Slider = ' + sliderValue);
+      }
+    </script>
+
+    <script type="text/javascript">
+      function tempSlider()
+      {
+        var sliderValue = document.getElementById('rating4').value;
+        document.getElementById('sliderVal4').innerHTML = sliderValue; 
+        console.log('Slider = ' + sliderValue);
+      }
+    </script>
+
+    <script type="text/javascript">
+      function brightSlider()
+      {
+        var sliderValue = document.getElementById('rating5').value;
+        document.getElementById('sliderVal5').innerHTML = sliderValue; 
+        console.log('Slider = ' + sliderValue);
+      }
+    </script>
+
+
+
+
+  </head>
+  <body>
+  	<script type="text/javascript">
+        var relay_state = false;
+        var auto_adcc = false;
+        var auto_adcc_interval;
+        console.log('We know the relay as shut right now, so if you enable it and come back, then we don\'t get the current status. Just an FYI...');
+            $(".relay-action").click(function() {
+                var action = $(this).attr('data-relay-action');
+                if (action == "toggle") {
+                    relay_state = !relay_state;
+                } else {
+                    relay_state = (action == "enable");
+                }
+                $("#relay-toggle-btn").addClass(relay_state ? 'btn-success' : 'btn-warning');
+                $("#relay-toggle-btn").removeClass(!relay_state ? 'btn-success' : 'btn-warning');
+                $.get('/relay/' + (relay_state ? 'enable' : 'disable'), function(res) {
+                    toastr.success(res.msg, 'Survey says?!');
+                })
+            });
+    </script>
+
+
+
+  	<div class="top">
+  		<div class="container">
+  			<div class="logo">
+  				<img src="img/logo.png" ALT="logo">
+  			</div>
+  			<h1>Lighting System</h1>
+  			<h2>a smart ambient lighting system</h2>
+  			<h3>Smart .. WiFi .. LED</h3>
+  			<div class="usmap">
+  				<img src="img/usmap.png"></img>
+  			</div>
+  		</div>
+  	</div>
+  		
+  	<div class="feature">
+	  	<div class="container">
+	  		<div class="ourvision">
+	  			<img src="img/svg/retina.svg">
+	  		</div>
+	  		<h1 class="title-title">Control Panel</h1>
+	  		<p>The lightbulb can be controlled using different options. The daymode option will set warm  lights in the room during the day. The nightmode will set cold lights in the room during the night. The manual option will give the user a full controlability to select the LED lights.</p>
+	  		<div class="row demo-tiles">
+		        <div class="col-xs-4">
+		          <div class="tile">
+		            <img src="img/svg/map.svg" class="tile-image big-illustration">
+		            <h3 class="tile-title">Demomode</h3>
+		            <p>The daymode option will automatically set warm lights in the room during the day</p>
+		            <form action="/Daymode" method="POST">
+                  <input class="btn btn-primary btn-large btn-block" type="submit" name="Daymode" value="Choose" data-relay-action="enable">
+                </form>
+
+		          </div>
+		        </div>
+		        <div class="col-xs-4">
+		          <div class="tile">
+		            <img src="img/svg/pencils.svg" class="tile-image">
+		            <h3 class="tile-title">Temp + Brightness</h3>
+		            <p>This mode will control both temperature nad brightness of the LEDs</p>
+		  
+                <!-- temp Slider  --> 
+                <h5>Temperature</h5>
+                <form action="/Temperature" method="POST" onsubmit="validateForm();">
+                  <input type="range" name="rating4" id="rating4" min="1000" max="20000" onchange="tempSlider()" oninput="tempSlider()" onmouseup="this.form.submit();"/>
+                  <output id="sliderVal4"></output>
+                </form>
+
+                <br/>
+                <!-- bright Slider  --> 
+                <h5>Brightness</h5>
+                <form action="/Brightness" method="POST" onsubmit="validateForm();">
+                  <input type="range" name="rating5" id="rating5" min="000" max="100" onchange="brightSlider()" oninput="brightSlider()" onmouseup="this.form.submit();"/>
+                  <output id="sliderVal5"></output>
+                </form>
+
+		          </div>
+		        </div>
+		        <div class="col-xs-4">
+		          <div class="tile">
+		            <img src="img/svg/clipboard.svg" class="tile-image">
+		            <h3 class="tile-title">RGB Colors</h3>
+		            <p>The RGB mode will control the colors of the LEDs</p>
+          
+
+      
+                <!-- 1st Slider  --> 
+                <h5>Red</h5>
+                <form action="/ColorSlider" method="POST" onsubmit="validateForm();">
+                  <input type="range" name="rating" id="rating" min="000" max="255" onchange="evalSlider()" oninput="evalSlider()" onmouseup="this.form.submit();"/>
+                  <output id="sliderVal"></output>
+                </form>
+
+                <br/>
+                <!-- 2nd Slider  --> 
+                <h5>Green</h5>
+                <form action="/ColorSlider2" method="POST" onsubmit="validateForm();">
+                  <input type="range" name="rating2" id="rating2" min="000" max="255" onchange="evalSlider2()" oninput="evalSlider2()" onmouseup="this.form.submit();"/>
+                  <output id="sliderVal2"></output>
+                </form>
+
+                <br/>
+                <!-- 3rd Slider  -->
+                <h5>Blue</h5> 
+                <form action="/ColorSlider3" method="POST" onsubmit="validateForm();">
+                  <input type="range" name="rating3" id="rating3" min="000" max="255" onchange="evalSlider3()" oninput="evalSlider3()" onmouseup="this.form.submit();"/>
+                  <output id="sliderVal3"></output>
+                </form>
+
+                <!-- Input Field  --> 
+                <!-- <form action="/" method="POST" onsubmit="validateForm();">
+                  Value: <input type="text" name="value" />
+                  </br>
+                  <input type="submit" value="Submit">
+
+                  </br>
+                </form> -->
+
+		            
+		          </div>
+		        </div>
+			</div>
+		</div>
+  	</div>
+  		
+  	
+	<div class="contact">
+		<div class="container">
+			<h1 class="title-title">Contact Us</h1>
+			<div id="form-main">
+		  		<div id="form-div">
+			  		<form class="form" id="form1">
+		  
+				  		<p class="name">
+					  		<input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="Name" id="name" />
+					  	</p>
+		  
+					  	<p class="email">
+						  	<input name="email" type="text" class="validate[required,custom[email]] feedback-input" id="email" placeholder="Email address" />
+						</p>
+		  
+						<p class="text">
+							<textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="Message"></textarea>
+						</p>
+		  
+		  
+						<div class="submit">
+							<input type="submit" value="Send" id="button-blue"/>
+							<div class="ease"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	  	  	
+  </body>
+
+</html>

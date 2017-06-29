@@ -1,0 +1,22 @@
+{
+    "name": "xpress-with-express",
+    "version": "1.0.0",
+    "description": "",
+    "main": "express-xpress-node.js",
+    "scripts": {
+        "start": "node express-xpress-node.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/perkyguy/xpress-with-express.git"
+    },
+    "author": "Perkyguy",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/perkyguy/xpress-with-express/issues"
+    },
+    "homepage": "https://github.com/perkyguy/xpress-with-express#readme",
+    "dependencies": {
+        "express": "^4.14.0"
+    }
+}
